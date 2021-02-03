@@ -36,6 +36,31 @@ print_words() and print_top().
 
 import sys
 
+def print_words(filename):
+  wc={}
+  text_file = open(filename,'r')
+  for line in text_file:
+    for word in line.split():
+        wc[word]=line.split().count(word)
+       
+  for i in sorted(wc.items()):
+    return i[0]+" "+i[1]
+
+def print_top(filename):
+  wc={}
+  text_file = open(filename,'r')
+  for line in text_file:
+    for word in line.split():
+      wc[word]=line.split().count(word)
+  count=0
+  for i in sorted(wc.values(),reverse=True):
+    count+=1
+    if (count<=20):
+      return i[0]+" "+i[1]
+    else: break  
+
+
+
 # +++your code here+++
 # Define print_words(filename) and print_top(filename) functions.
 # You could write a helper utility function that reads a file
