@@ -39,24 +39,37 @@ import sys
 def print_words(filename):
   wc={}
   text_file = open(filename,'r')
-  for line in text_file:
-    for word in line.split():
-        wc[word]=line.split().count(word)
-       
+  lines=text_file.readlines()
+  wc=split(lines)
   for i in sorted(wc.items()):
-    return i[0]+" "+i[1]
+    print(i[0] + " " + str(i[1]))
 
+def split(a):
+  wc={}
+  for line in a:
+    x=line.replace(",","").replace(".","").replace(":","").replace('"',"").replace("|","").replace(";","").replace("?","")
+    # print(x)
+    # sys.exit(0)
+    # line.replace(".","")
+    # line.replace(":","")
+    x=x.split()
+    for word in x:
+        word=word.lower()
+    for word in x:    
+        wc[word]=x.count(word)
+  return wc     
+  
 def print_top(filename):
   wc={}
   text_file = open(filename,'r')
-  for line in text_file:
-    for word in line.split():
-      wc[word]=line.split().count(word)
+  lines=text_file.readlines()
+  wc=split(lines)
+  
   count=0
-  for i in sorted(wc.values(),reverse=True):
+  for i in sorted(wc.items(),key=lambda item: item[1],reverse=True):
     count+=1
     if (count<=20):
-      return i[0]+" "+i[1]
+      print (i[0]+" "+str(i[1]))
     else: break  
 
 
