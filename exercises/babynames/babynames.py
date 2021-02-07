@@ -32,13 +32,26 @@ Suggested milestones for incremental development:
 """
 
 def extract_names(filename):
+  
   """
   Given a file name for baby.html, returns a list starting with the year string
   followed by the name-rank strings in alphabetical order.
   ['2006', 'Aaliyah 91', Aaron 57', 'Abagail 895', ' ...]
   """
-  # +++your code here+++
-  return
+  text_file = open(filename,'r')
+  # print(text_file.read())
+  # sys.exit()
+  li=[]
+  a=text_file.read()
+  match = re.search(r'<h3 .*(\d\d\d\d).*', a)
+ 
+  m2=re.findall(r'.*<td>(\d.*)</td><td>(\w.*)</td><td>(\w.*)</td>',a)
+  for i in m2:
+    li.append(i[1]+" "+i[0])
+    li.append(i[2]+" "+i[0])
+  li.append(match.group(1))
+  # print(sorted(li))
+  return sorted(li)
 
 
 def main():
@@ -56,7 +69,13 @@ def main():
   if args[0] == '--summaryfile':
     summary = True
     del args[0]
-
+  # print(args)
+  # for i in args:
+  print(args[0])
+  sys.exit()
+  ft = open(args[0]+".summary.txt",'x')
+  ft.write(extract_names(args[0]))
+  ft.close()
   # +++your code here+++
   # For each filename, get the names, then either print the text output
   # or write it to a summary file

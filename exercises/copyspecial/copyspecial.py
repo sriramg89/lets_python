@@ -11,7 +11,49 @@ import subprocess
 
 """Copy Special exercise
 """
+def get_special_paths(dir):
+  filenames=os.listdir(dir[0])
+  fullpath=[]
+  for i in filenames[1:]:
+    path=os.path.join(dir[0], i)
+    fullpath.append(os.path.abspath(path))
+  # print(fullpath)
+  return fullpath
 
+  # sys.exit()
+  # for a in filenames[1:]:
+  #   print(a)
+  # sys.exit()
+  # for x in dir:
+  #   # filenames = os.listdir(x)
+  #   print(x)
+  # sys.exit()
+  # for filename in filenames:
+  #   path=os.path.join(dir, filename)
+  #   os.path.abspath(path)
+  #   return path
+
+def copy_to(path,dir):
+    # source = 'current/test/test.py' ## path to source file
+    # target = path
+    os.makedirs(path)
+    fp=[]
+    
+    filenames=os.listdir(dir[0])[2:]
+    for i in filenames:
+      fp.append(path + "/" + i)
+    # print(fp)
+    # sys.exit()
+    # print(get_special_paths(dir)[1:])
+    # print(fp)
+    # sys.exit()
+    for i in range(len(get_special_paths(dir)[1:])):
+      
+      shutil.copy(get_special_paths(dir)[1:][i],fp[i])
+
+# def zip_to(paths, zippath):
+
+#   subprocess.call(, *, stdin=None, stdout=None, stderr=None, shell=False)
 # +++your code here+++
 # Write functions and modify main() to call them
 
@@ -47,6 +89,7 @@ def main():
 
   # +++your code here+++
   # Call your functions
-  
+  get_special_paths(args)
+  copy_to(todir,args)
 if __name__ == "__main__":
   main()
