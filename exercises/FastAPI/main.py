@@ -89,13 +89,18 @@ async def create_blog(detail_request: BlogDetails, db: Session = Depends(get_db)
         "code": "success",
         "message": "Blog details added to the database"
     }    
+@blog.get("/")
+def abc(db: Session = Depends(get_db)):
+    data=db.query(Blog).all()
+    return data    
 
 @blog.put("/{item_id}", response_model=BlogDetails)
 async def update_blog(item_id: str, item: BlogDetails,db: Session = Depends(get_db)):
     items=Blog()
     data=db.query(Blog).all()
-    update_item_encoded = jsonable_encoder(item)
-    return update_item_encoded
+    # update_item_encoded = jsonable_encoder(item)
+    # data[item_id]=update_item_encoded    
+    return data
     # data[item_id] = update_item_encoded
     # return data
 
