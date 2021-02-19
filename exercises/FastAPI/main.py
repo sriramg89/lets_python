@@ -112,8 +112,8 @@ async def update_blog(item_id: int, item: BlogEdit, db: Session = Depends(get_db
     db.query(Blog).filter(Blog.User_ID==int(item_id)).update(update_item_encoded)
     
     db.commit()
-    data= db.query(Blog).filter(Blog.User_ID==int(item_id))
-    return  data
+    data= db.query(Blog).filter(Blog.User_ID==int(item_id)).first()
+    return data
 
 @blog.get("/{UID}")                                                
 async def job_dataid(UID: int, db: Session = Depends(get_db)):
