@@ -1,11 +1,16 @@
 
+# from _typeshed import NoneType
+from typing import Optional
+
+from sqlalchemy.sql.elements import Null
+from sqlalchemy.sql.sqltypes import NullType
 from fastapi import FastAPI, Depends, Request
 from sqlalchemy.sql.expression import null, select,join,outerjoin, true  
 import dtables                                                  
 from dbase import SessionLocal, engine
 from pydantic import BaseModel                                      
 from dtables import User, Blog
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, session
 import datetime
 from fastapi.encoders import jsonable_encoder
 import sys
@@ -37,7 +42,12 @@ class BlogDetails(BaseModel):
     User_ID : int
     Title : str
     Description : str
-  
+
+class BlogEdit(BlogDetails):
+    Blog_ID: Optional[int]
+    User_ID : Optional[int]
+    Title : Optional[str]
+    Description : Optional[str]
 
 @user.get("/all")                                                              
 def User_Details(db: Session = Depends(get_db)):
@@ -88,21 +98,22 @@ async def create_blog(detail_request: BlogDetails, db: Session = Depends(get_db)
     return {
         "code": "success",
         "message": "Blog details added to the database"
-    }    
+    } 
+       
 @blog.get("/")
 def abc(db: Session = Depends(get_db)):
     data=db.query(Blog).all()
     return data    
 
-@blog.put("/{item_id}", response_model=BlogDetails)
-async def update_blog(item_id: str, item: BlogDetails,db: Session = Depends(get_db)):
-    items=Blog()
-    data=db.query(Blog).all()
-    # update_item_encoded = jsonable_encoder(item)
-    # data[item_id]=update_item_encoded    
-    return data
-    # data[item_id] = update_item_encoded
-    # return data
+@blog.post("/{item_id}")
+async def update_blog(item_id: int, item: BlogEdit, db: Session = Depends(get_db)):
+    
+    update_item_encoded = {i: jsonable_encoder(item)[i] for i in jsonable_encoder(item) if jsonable_encoder(item)[i]!=None}
+    db.query(Blog).filter(Blog.User_ID==int(item_id)).update(update_item_encoded)
+    
+    db.commit()
+    data= db.query(Blog).filter(Blog.User_ID==int(item_id))
+    return  data
 
 @blog.get("/{UID}")                                                
 async def job_dataid(UID: int, db: Session = Depends(get_db)):
