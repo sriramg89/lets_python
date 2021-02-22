@@ -42,7 +42,7 @@ async def User_by_entry(entry: str, db: Session = Depends(get_db)):
 async def create_user(detail_request: UserDetails, db: Session = Depends(get_db)):
 
     post = User()                                                               
-    post.User_ID = detail_request.User_ID                                         
+    # post.User_ID = detail_request.User_ID                                         
     post.Email=detail_request.Email
     post.Password=detail_request.Password
     post.Created_on=detail_request.Created_on
@@ -58,7 +58,7 @@ async def create_user(detail_request: UserDetails, db: Session = Depends(get_db)
 async def create_blog(detail_request: BlogDetails, db: Session = Depends(get_db)):
 
     post = Blog()                                                               
-    post.Blog_ID = detail_request.Blog_ID
+    # post.Blog_ID = detail_request.Blog_ID
     post.User_ID = detail_request.User_ID                                         
     post.Title=detail_request.Title
     post.Description=detail_request.Description
