@@ -1,25 +1,31 @@
 
-# from _typeshed import NoneType
-from typing import Optional
+# from typing import Optional
 
-from sqlalchemy.sql.elements import Null
-from sqlalchemy.sql.sqltypes import NullType
+# from sqlalchemy.sql.elements import Null
+# from sqlalchemy.sql.sqltypes import NullType
+# from fastapi import FastAPI, Depends, Request
+# from sqlalchemy.sql.expression import null, select,join,outerjoin, true  
+# import dtables                                                  
+# from dbase import SessionLocal, engine
+# from pydantic import BaseModel                                      
+# from dtables import User, Blog
+# from sqlalchemy.orm import Session, session
+# import datetime
+# from fastapi.encoders import jsonable_encoder
+# import sys
+# # from fastapi.templating import Jinja2Templates
+import dmodel,dbase_model
 from fastapi import FastAPI, Depends, Request
-from sqlalchemy.sql.expression import null, select,join,outerjoin, true  
-import dtables                                                  
-from dbase import SessionLocal, engine
-from pydantic import BaseModel                                      
-from dtables import User, Blog
-from sqlalchemy.orm import Session, session
-import datetime
 from fastapi.encoders import jsonable_encoder
-import sys
-# from fastapi.templating import Jinja2Templates
-
+from sqlalchemy.orm import Session, session
+from dmodel import get_db
+from dbase_model import User,Blog
+from dmodel import UserDetails, BlogDetails, BlogEdit
+from dbase_model import SessionLocal, engine
 
 user = FastAPI()                                                           
 blog = FastAPI()
-# templates=Jinja2Templates(directory="templates")   
+ 
 
 def get_db():                                                           
     try:
@@ -28,26 +34,7 @@ def get_db():
     finally:
         db.close()        
 
-dtables.Base.metadata.create_all(bind=engine)
-
-
-class UserDetails(BaseModel):                                         
-    User_ID : int
-    Email : str
-    Password : str
-    Created_on : str
-
-class BlogDetails(BaseModel):                                         
-    Blog_ID : int
-    User_ID : int
-    Title : str
-    Description : str
-
-class BlogEdit(BlogDetails):
-    Blog_ID: Optional[int]
-    User_ID : Optional[int]
-    Title : Optional[str]
-    Description : Optional[str]
+dbase_model.Base.metadata.create_all(bind=engine)
 
 @user.get("/all")                                                              
 def User_Details(db: Session = Depends(get_db)):
