@@ -1,18 +1,19 @@
 
 
-import sys
-sys.path.append('C:/Users/srira/Downloads/GitHub/lets_python/exercises/FastAPI/DB_Models')
-sys.path.append('C:/Users/srira/Downloads/GitHub/lets_python/exercises/FastAPI/Models')
-sys.path.append('C:/Users/srira/Downloads/GitHub/lets_python/exercises/FastAPI/CRUD')
+# import sys
+# sys.path.append('C:/Users/srira/Downloads/GitHub/lets_python/exercises/FastAPI/DB_Models')
+# sys.path.append('C:/Users/srira/Downloads/GitHub/lets_python/exercises/FastAPI/Models')
+# sys.path.append('C:/Users/srira/Downloads/GitHub/lets_python/exercises/FastAPI/CRUD')
 
-import dmodel,dbase_model
+from Models import dmodel 
+import DB_Models.dbase_model
 from fastapi import FastAPI, Depends, Request
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session, session
-# from dmodel import get_db
-from dbase_model import User,Blog
-from dmodel import UserDetails, BlogDetails, BlogEdit
-from dbase_model import SessionLocal, engine
+# from Models.dmodel import get_db
+from DB_Models.dbase_model import User,Blog
+from Models.dmodel import UserDetails, BlogDetails, BlogEdit
+from DB_Models.dbase_model import SessionLocal, engine
 
 
 user = FastAPI()                                                           
@@ -26,7 +27,7 @@ def get_db():
     finally:
         db.close()        
 
-dbase_model.Base.metadata.create_all(bind=engine)
+DB_Models.dbase_model.Base.metadata.create_all(bind=engine)
 
 @user.get("/all")                                                              
 def User_Details(db: Session = Depends(get_db)):
