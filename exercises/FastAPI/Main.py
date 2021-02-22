@@ -8,12 +8,9 @@ from sqlalchemy.orm import Session, session
 from DB_Models.dbase_model import User,Blog
 from Models.dmodel import UserDetails, BlogDetails, BlogEdit
 from DB_Models.dbase_model import SessionLocal, engine
-
-
                                                           
 blog = FastAPI()
  
-
 def get_db():                                                           
     try:
         db = SessionLocal()
