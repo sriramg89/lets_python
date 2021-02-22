@@ -10,7 +10,7 @@ from Models.dmodel import UserDetails, BlogDetails, BlogEdit
 from DB_Models.dbase_model import SessionLocal, engine
 
 
-user = FastAPI()                                                           
+                                                          
 blog = FastAPI()
  
 
@@ -23,12 +23,12 @@ def get_db():
 
 DB_Models.dbase_model.Base.metadata.create_all(bind=engine)
 
-@user.get("/all")                                                              
+@blog.get("/user/all")                                                              
 def User_Details(db: Session = Depends(get_db)):
         data=db.query(User).all()
         return {"data":data}
 
-@user.get("/{entry}")                                                
+@blog.get("/user/{entry}")                                                
 async def User_by_entry(entry: str, db: Session = Depends(get_db)):
     
     if(entry.isnumeric()==1):
@@ -41,7 +41,7 @@ async def User_by_entry(entry: str, db: Session = Depends(get_db)):
         data = db.query(User).filter(User.Email == entry).all()
         return {"data":data}     
 
-@user.post("/")                                                    
+@blog.post("/user/")                                                    
 async def create_user(detail_request: UserDetails, db: Session = Depends(get_db)):
 
     post = User()                                                               
@@ -57,7 +57,7 @@ async def create_user(detail_request: UserDetails, db: Session = Depends(get_db)
         "message": "User details added to the database"
     }    
 
-@blog.post("/")                                                    
+@blog.post("/blog/")                                                    
 async def create_blog(detail_request: BlogDetails, db: Session = Depends(get_db)):
 
     post = Blog()                                                               
@@ -74,12 +74,12 @@ async def create_blog(detail_request: BlogDetails, db: Session = Depends(get_db)
         "message": "Blog details added to the database"
     } 
        
-@blog.get("/")
+@blog.get("/blog/")
 def abc(db: Session = Depends(get_db)):
     data=db.query(Blog).all()
     return data    
 
-@blog.post("/{item_id}")
+@blog.post("/blog/{item_id}")
 async def update_blog(item_id: int, item: BlogEdit, db: Session = Depends(get_db)):
     
     update_item_encoded = {i: jsonable_encoder(item)[i] for i in jsonable_encoder(item) if jsonable_encoder(item)[i]!=None}
@@ -89,13 +89,13 @@ async def update_blog(item_id: int, item: BlogEdit, db: Session = Depends(get_db
     data= db.query(Blog).filter(Blog.User_ID==int(item_id)).first()
     return data
 
-@blog.get("/{UID}")                                                
+@blog.get("/blog/{UID}")                                                
 async def job_dataid(UID: int, db: Session = Depends(get_db)):
 
         data = db.query(Blog).filter(Blog.User_ID == int(UID)).all()
         return {"data":data}
 
-@blog.delete("/{UID}")                                             
+@blog.delete("/blog/{UID}")                                             
 async def job_databyID(UID:int, db: Session = Depends(get_db)):
    
     db.query(Blog).filter(Blog.User_ID == UID).delete()
